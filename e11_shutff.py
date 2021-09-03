@@ -10,6 +10,7 @@ Original file is located at
 # Measures Temperature, Humidty, Pressure
 # BME280 - Adafruit
 
+import csv
 import time
 import board
 from adafruit_bme280 import basic as adafruit_bme280
@@ -18,12 +19,12 @@ from adafruit_bme280 import basic as adafruit_bme280
 i2c = board.I2C()  # uses board.SCL and board.SDA
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 
-while True:
-    print("\nTemperature: %0.1f C" % bme280.temperature)
-    print("Humidity: %0.1f %%" % bme280.relative_humidity)
-    print("Pressure: %0.1f hPa" % bme280.pressure)
-    print("Altitude = %0.2f meters" % bme280.altitude)
-    time.sleep(2)
+#while True:
+#    print("\nTemperature: %0.1f C" % bme280.temperature)
+#    print("Humidity: %0.1f %%" % bme280.relative_humidity)
+#    print("Pressure: %0.1f hPa" % bme280.pressure)
+#    print("Altitude = %0.2f meters" % bme280.altitude)
+#    time.sleep(2)
 
 header = ['Time','Temperature','Pressure','Humidity']
 ## sensor = BME280(t_mode=BME280_OSMAPLE_8, p_mode=BME280, h_mode=BME280)
@@ -34,13 +35,13 @@ pressure = []
 humidity = []
 
 start_time = time.time()
-stop_time = start_time + 5*60
+stop_time = start_time + 60
 current_time = time.time()
 
 
-with open('SensorData.csv','w') as f:
-  writer = csv.writer(f)
-  writer.write(header)
+with open('SensorData.csv','w', newline = '') as csvfile:
+  writer = csv.writer(csvfile, delimiter = ',')
+  writer.writerow(header)
   while current_time < stop_time:
     temp = bme280.temperature
     press = bme280.pressure
@@ -51,9 +52,15 @@ with open('SensorData.csv','w') as f:
     temperatures.append(temp)
     pressure.append(press)
     humidity.append(humid)
+    
+    writer.writerow([current_time, temp, press, humid])
+    
     time.sleep(1)
     
-  writer.writerow([times, temperatures, pressure, humidity])
+    #print(current_time)
+    
+  #writer.writerow([times, temperatures, pressure, humidity])
+  print()
   
 ##csvfile = open('SensorData.csv', 'r')
 
