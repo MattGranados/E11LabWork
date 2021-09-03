@@ -11,37 +11,22 @@ Original file is located at
 # BME280 - Adafruit
 
 import time
-from Adafruit_BME280 import *
+import board
+from adafruit_bme280 import basic as adafruit_bme280
 
-sensor = BME280(t_mode=BME280_OSMAPLE_8, p_mode=BME280, h_mode=BME280)
+# Create sensor object, using the board's default I2C bus.
+i2c = board.I2C()  # uses board.SCL and board.SDA
+bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 
-times = []
-temperatures = []
-pressure = []
-humidity = []
-
-start_time = time.time()
-stop_time = start_time + 5*60
-current_time = time.time()
-
-while current_time < stop_time:
-  temp = sensor.read_temperature()
-  current_time = time.time()
-  print(temp)
-  times.append(current_time)
-  temperatures.append(temp)
-  time.sleep(1)
-
-# Write the data to a file - time column, temperature, humidity, pressure
-# Look up Adafruit CircuitPython BME280 module 
-# update code to use module
-
-import csv
-import time
-from Adafruit_BME280 import *
+while True:
+    print("\nTemperature: %0.1f C" % bme280.temperature)
+    print("Humidity: %0.1f %%" % bme280.relative_humidity)
+    print("Pressure: %0.1f hPa" % bme280.pressure)
+    print("Altitude = %0.2f meters" % bme280.altitude)
+    time.sleep(2)
 
 header = ['Time','Temperature','Pressure','Humidity']
-sensor = BME280(t_mode=BME280_OSMAPLE_8, p_mode=BME280, h_mode=BME280)
+## sensor = BME280(t_mode=BME280_OSMAPLE_8, p_mode=BME280, h_mode=BME280)
 
 times = []
 temperatures = []
@@ -52,18 +37,71 @@ start_time = time.time()
 stop_time = start_time + 5*60
 current_time = time.time()
 
-while current_time < stop_time:
-  temp = sensor.read_temperature()
-  press = sensor.read_pressure()
-  humid = sensor.read.humidity()
-  current_time = time.time()
-  with open('SensorData.csv','w') as f
-    writer = csv.writer(f)
-    writer.write(header)
-    writer.writerow(['current_time','temp','press','humid'])
-  print(temp)
-  times.append(current_time)
-  temperatures.append(temp)
-  pressure.append(press)
-  humidity.append(humid)
-  time.sleep(1)
+
+with open('SensorData.csv','w') as f:
+  writer = csv.writer(f)
+  writer.write(header)
+  while current_time < stop_time:
+    temp = bme280.temperature
+    press = bme280.pressure
+    humid = bme280.relative_humidity
+    current_time = time.time() 
+    
+    times.append(current_time)
+    temperatures.append(temp)
+    pressure.append(press)
+    humidity.append(humid)
+    time.sleep(1)
+    
+  writer.writerow([times, temperatures, pressure, humidity])
+  
+##csvfile = open('SensorData.csv', 'r')
+
+
+
+#with open('SensorData.csv','w') as f
+#  writer = csv.writer(f)
+#  writer.write(header)
+#  while current_time < stop_time:
+#    temp = bme280.temperature
+#    press = bme280.pressure
+#    humid = bme280.relative_humidity
+#    current_time = time.time() 
+#    writer.writerow(['current_time','temp','press','humid'])
+#    times.append(current_time)
+#    temperatures.append(temp)
+#    pressure.append(press)
+#    humidity.append(humid)
+#  time.sleep(1)
+
+#while current_time < stop_time:
+#  temp = bme280.temperature
+#  press = bme280.pressure
+#  humid = bme280.relative_humidity
+#  current_time = time.time()
+#  with open('SensorData.csv','w') as f
+#    writer = csv.writer(f)
+#    writer.write(header)
+#    writer.writerow(['current_time','temp','press','humid'])
+#    f.close()
+#  times.append(current_time)
+#  temperatures.append(temp)
+#  pressure.append(press)
+#  humidity.append(humid)
+#  time.sleep(1)
+
+##while current_time < stop_time:
+ ## temp = sensor.read_temperature()
+ ## press = sensor.read_pressure()
+  ##humid = sensor.read.humidity()
+  ##current_time = time.time()
+  ##with open('SensorData.csv','w') as f
+    ##writer = csv.writer(f)
+   ## writer.write(header)
+   ## writer.writerow(['current_time','temp','press','humid'])
+ ## print(temp)
+  ##times.append(current_time)
+ ## temperatures.append(temp)
+ ## pressure.append(press)
+  ##humidity.append(humid)
+  ##time.sleep(1)
