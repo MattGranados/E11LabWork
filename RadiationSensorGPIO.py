@@ -77,9 +77,9 @@ def callback_final(interval, detect_time, delay, title):
   #finally:                   # this block will run no matter how the try block exits  
   GPIO.cleanup()         # clean up after yourself  
 
-interval = int(sys.argv[1]) * 60
-detect_time = int(sys.argv[2]) * 60
-delay = int(sys.argv[3]) * 60
+interval = int(sys.argv[1]) 
+detect_time = int(sys.argv[2]) 
+delay = int(sys.argv[3]) 
 title = sys.argv[4]
 
 callback_final(interval, detect_time, delay, title)
