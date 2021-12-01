@@ -97,7 +97,7 @@ def AQIWeather_Radiation_SensorData(interval, detect_time, delay, title):
       pm10 = int.from_bytes(text[8:10], byteorder = 'big')
       current_time = time.time() 
       
-      times.append(current_time)
+      #times.append(current_time)
       temperatures.append(temp)
       pressure.append(press)
       humidity.append(humid)
