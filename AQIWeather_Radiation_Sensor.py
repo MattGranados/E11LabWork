@@ -129,5 +129,5 @@ detect_time = int(sys.argv[2])
 delay = int(sys.argv[3])
 title = sys.argv[4]          
 
-AQIWeather_Radiation_SensorData(interval,sleep_time,delay,title)
+AQIWeather_Radiation_SensorData(interval,detect_time,delay,title)
 
